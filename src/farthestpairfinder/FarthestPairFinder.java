@@ -4,6 +4,7 @@ import javax.swing.JFrame;
 import java.awt.*;
 import java.util.Random;
 import java.util.ArrayList;
+import java.util.List;
 
 public class FarthestPairFinder extends JFrame {
 
@@ -13,7 +14,7 @@ public class FarthestPairFinder extends JFrame {
      Point2D[] S = new Point2D[ numPoints ]; //the set S
      Point2D[] farthestPair = new Point2D[ 2 ]; //the two points of the farthest pair
      
-     ArrayList<Point2D> convexHull = new ArrayList(); //the vertices of the convex hull of S
+     List<Point2D> convexHull = new ArrayList(); //the vertices of the convex hull of S
      
      Color convexHullColour = Color.white;
      Color genericColour = Color.yellow;
