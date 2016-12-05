@@ -11,7 +11,7 @@ public class FarthestPairFinder extends JFrame {
      int pointSize = 12;
      int numPoints = 50;
      
-     Point2D[] S = new Point2D[ numPoints ]; //the set S
+     List<Point2D> S = new ArrayList();; //the set S
      Point2D[] farthestPair = new Point2D[ 2 ]; //the two points of the farthest pair
      
      List<Point2D> convexHull = new ArrayList(); //the vertices of the convex hull of S
@@ -19,7 +19,7 @@ public class FarthestPairFinder extends JFrame {
      Color convexHullColour = Color.white;
      Color genericColour = Color.yellow;
 
-    
+     
     //fills S with random points
     public void makeRandomPoints() {
         Random rand = new Random();
@@ -27,14 +27,16 @@ public class FarthestPairFinder extends JFrame {
         for (int i = 0; i < numPoints; i++) {
             int x = 50 + rand.nextInt(500);
             int y = 50 + rand.nextInt(500);
-            S[i] = new Point2D( x, y );            
+            S.add(new Point2D( x, y ));            
         }        
     }
 
     
     public void paint(Graphics g) {        
         //draw the points in S
-        
+        for(Point2D p: S){
+            g.drawRect((int)p.x, (int)p.y, 1, 1);
+        }
         //draw the points in the convex hull
         
         //draw a red line connecting the farthest pair
@@ -44,6 +46,7 @@ public class FarthestPairFinder extends JFrame {
     public void findConvexHull() {
         //code this
         //you'll need to make use of the Vector class to help calculate angles in 2D
+        S = MergeSort.mergeSort(S);
     }
     
     public void findFarthestPair_EfficientWay() {
