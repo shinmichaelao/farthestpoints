@@ -34,11 +34,15 @@ public class FarthestPairFinder extends JFrame {
     
     public void paint(Graphics g) {        
         //draw the points in S
+        g.setColor(Color.black);
         for(Point2D p: S){
             g.drawRect((int)p.x, (int)p.y, 1, 1);
         }
         //draw the points in the convex hull
-        
+        g.setColor(Color.red);
+        for(Point2D p: convexHull){
+            g.drawRect((int)p.x, (int)p.y, 1, 1);
+        }
         //draw a red line connecting the farthest pair
     }
     
@@ -47,6 +51,17 @@ public class FarthestPairFinder extends JFrame {
         //code this
         //you'll need to make use of the Vector class to help calculate angles in 2D
         S = MergeSort.mergeSort(S);
+        convexHull.add(S.get(0));
+        convexHull.add(S.get(1));
+        for(int i = 2; i<S.size();i++){
+            Point2D curPoint = S.get(i);
+            while(Point2D.checkLeftTurn(convexHull.get(convexHull.size()-1), convexHull.get(convexHull.size()-2), curPoint)){
+                convexHull.remove(convexHull.size()-1);
+                if(convexHull.size()< 2){
+                    break;
+                }
+            }
+        }
     }
     
     public void findFarthestPair_EfficientWay() {
