@@ -34,9 +34,14 @@ public class FarthestPairFinder extends JFrame {
     
     public void paint(Graphics g) {        
         //draw the points in S
+        g.setColor(Color.white);
+        g.drawRect(0, 0, 800, 800);
         g.setColor(Color.black);
+        int i = 0;
         for(Point2D p: S){
             g.drawRect((int)p.x, (int)p.y, 1, 1);
+            //g.drawString(Integer.toString(i), (int)p.x, (int)p.y);
+            i++;
         }
         //draw the points in the convex hull
         g.setColor(Color.red);
@@ -55,11 +60,21 @@ public class FarthestPairFinder extends JFrame {
         convexHull.add(S.get(1));
         for(int i = 2; i<S.size();i++){
             Point2D curPoint = S.get(i);
-            while(Point2D.checkLeftTurn(convexHull.get(convexHull.size()-1), convexHull.get(convexHull.size()-2), curPoint)){
-                convexHull.remove(convexHull.size()-1);
-                if(convexHull.size()< 2){
-                    break;
+            int lastIndex = convexHull.size() - 1;
+            boolean leftTurn = Point2D.checkLeftTurn(convexHull.get(lastIndex-1), convexHull.get(lastIndex), curPoint);
+            if(leftTurn){
+                while(leftTurn){
+                    convexHull.remove(lastIndex);
+                    lastIndex --;
+                    if(convexHull.size() < 2){
+                        break;
+                    }
+                    leftTurn = Point2D.checkLeftTurn(convexHull.get(lastIndex-1), convexHull.get(lastIndex), curPoint);
                 }
+                convexHull.add(curPoint);
+            }
+            else{
+                convexHull.add(curPoint);
             }
         }
     }

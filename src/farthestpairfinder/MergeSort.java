@@ -14,12 +14,14 @@ import java.util.List;
 public class MergeSort {
     public static List<Point2D> mergeSort(List<Point2D> a){
         int length = a.size();
-        if(length <= 1){
+        if(length == 1){
             return a;
         }
         
-        List<Point2D> kappa = a.subList(0,length/2);
-        
+        List<Point2D> kappa = new ArrayList();
+        for(Point2D p: a.subList(0, length/2)){
+                kappa.add(p);
+        }
         List<Point2D> kappa2 = new ArrayList();
         for(Point2D p: a.subList(length/2, length)){
                 kappa2.add(p);
@@ -34,6 +36,16 @@ public class MergeSort {
         List<Point2D> result = new ArrayList();
         
         while(a1.size() > 0 && a2.size() > 0){
+            if(a1.get(0).x == a2.get(0).x){
+                if(a1.get(0).y < a2.get(0).y){
+                    result.add(a1.get(0));
+                    a1.remove(0);
+                }
+                else{
+                    result.add(a2.get(0));
+                    a2.remove(0);
+                }
+            }
             if(a1.get(0).x < a2.get(0).x){
                 result.add(a1.get(0));
                 a1.remove(0);
