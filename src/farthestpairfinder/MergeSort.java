@@ -46,7 +46,7 @@ public class MergeSort {
                     a2.remove(0);
                 }
             }
-            if(a1.get(0).x < a2.get(0).x){
+            else if(a1.get(0).x < a2.get(0).x){
                 result.add(a1.get(0));
                 a1.remove(0);
             }

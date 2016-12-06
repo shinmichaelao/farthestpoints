@@ -9,7 +9,7 @@ import java.util.List;
 public class FarthestPairFinder extends JFrame {
 
      int pointSize = 12;
-     int numPoints = 50;
+     int numPoints = 100;
      
      List<Point2D> S = new ArrayList();; //the set S
      Point2D[] farthestPair = new Point2D[ 2 ]; //the two points of the farthest pair
@@ -37,16 +37,15 @@ public class FarthestPairFinder extends JFrame {
         g.setColor(Color.white);
         g.drawRect(0, 0, 800, 800);
         g.setColor(Color.black);
-        int i = 0;
         for(Point2D p: S){
             g.drawRect((int)p.x, (int)p.y, 1, 1);
-            //g.drawString(Integer.toString(i), (int)p.x, (int)p.y);
-            i++;
         }
         //draw the points in the convex hull
         g.setColor(Color.red);
-        for(Point2D p: convexHull){
-            g.drawRect((int)p.x, (int)p.y, 1, 1);
+        for(int i = 0; i < convexHull.size()-1; i++){
+            Point2D curPoint = convexHull.get(i);
+            Point2D nextPoint = convexHull.get(i+1);
+            g.drawLine((int)curPoint.x, (int)curPoint.y, (int)nextPoint.x, (int)nextPoint.y);
         }
         //draw a red line connecting the farthest pair
     }
@@ -54,7 +53,7 @@ public class FarthestPairFinder extends JFrame {
     
     public void findConvexHull() {
         //code this
-        //you'll need to make use of the Vector class to help calculate angles in 2D
+        //finds bottom half of the convex hull left to right
         S = MergeSort.mergeSort(S);
         convexHull.add(S.get(0));
         convexHull.add(S.get(1));
@@ -62,21 +61,42 @@ public class FarthestPairFinder extends JFrame {
             Point2D curPoint = S.get(i);
             int lastIndex = convexHull.size() - 1;
             boolean leftTurn = Point2D.checkLeftTurn(convexHull.get(lastIndex-1), convexHull.get(lastIndex), curPoint);
-            if(leftTurn){
-                while(leftTurn){
-                    convexHull.remove(lastIndex);
-                    lastIndex --;
-                    if(convexHull.size() < 2){
-                        break;
-                    }
+            while(leftTurn){
+                convexHull.remove(lastIndex);
+                lastIndex --;
+                if(convexHull.size() < 2){
+                    leftTurn = false;
+                }
+                else{
                     leftTurn = Point2D.checkLeftTurn(convexHull.get(lastIndex-1), convexHull.get(lastIndex), curPoint);
                 }
-                convexHull.add(curPoint);
             }
-            else{
-                convexHull.add(curPoint);
-            }
+            convexHull.add(curPoint);
         }
+        
+        //find top half of convex hull right to left
+        List<Point2D> convexHullTop = new ArrayList();
+        convexHullTop.add(S.get(S.size()-1));
+        convexHullTop.add(S.get(S.size()-2));
+        for(int i = S.size()-3; i>=0;i--){
+            Point2D curPoint = S.get(i);
+            int lastIndex = convexHullTop.size() - 1;
+            boolean leftTurn = Point2D.checkLeftTurn(convexHullTop.get(lastIndex-1), convexHullTop.get(lastIndex), curPoint);
+            while(leftTurn){
+                convexHullTop.remove(lastIndex);
+                lastIndex --;
+                if(convexHullTop.size() < 2){
+                    leftTurn = false;
+                }
+                else{
+                    leftTurn = Point2D.checkLeftTurn(convexHullTop.get(lastIndex-1), convexHullTop.get(lastIndex), curPoint);
+                }
+            }
+            convexHullTop.add(curPoint);
+        }
+        
+        //combine bottom half and top half
+        convexHull.addAll(convexHullTop);
     }
     
     public void findFarthestPair_EfficientWay() {
@@ -95,7 +115,7 @@ public class FarthestPairFinder extends JFrame {
         
         FarthestPairFinder fpf = new FarthestPairFinder();
         
-        fpf.setBackground(Color.BLACK);
+        fpf.setBackground(Color.white);
         fpf.setSize(800, 800);
         fpf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -103,7 +123,7 @@ public class FarthestPairFinder extends JFrame {
         
         fpf.findConvexHull();
         
-        fpf.findFarthestPair_EfficientWay();
+        //fpf.findFarthestPair_EfficientWay();
         
         fpf.setVisible(true); 
     }

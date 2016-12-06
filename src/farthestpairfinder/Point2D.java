@@ -22,8 +22,7 @@ public class Point2D {
     public static boolean checkLeftTurn(Point2D center, Point2D p1, Point2D p2){
         double slope1 = getSlope(center, p1);
         double slope2 = getSlope(center, p2);
-        if(slope1 >= slope2){
-            System.out.println("Left Turn");
+        if(slope1 <= slope2){
             return true;
         }
         else{
