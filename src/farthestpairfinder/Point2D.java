@@ -8,15 +8,19 @@ public class Point2D {
     boolean visited; //might need this in the convex hull finding algorithm
     Color color;
     
-    public Point2D(int x, int y) {
+    public Point2D(double x, double y) {
         this.x = x;
         this.y = y;
         this.visited = false;
         this.color = Color.yellow;
     }
     
+    public static double getDistance(Point2D p1, Point2D p2){
+        return Math.sqrt(Math.pow(p1.x-p2.x,2) + Math.pow(p1.y-p2.y,2));
+    }
+    
     public static double getSlope(Point2D p1, Point2D p2){
-        return (p1.y - p2.y)/(p1.x - p2.x);
+        return (p2.y - p1.y)/(p2.x - p1.x);
     }
     
     public static boolean checkLeftTurn(Point2D center, Point2D p1, Point2D p2){

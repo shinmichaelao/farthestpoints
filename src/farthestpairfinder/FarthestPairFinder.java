@@ -34,20 +34,21 @@ public class FarthestPairFinder extends JFrame {
     
     public void paint(Graphics g) {        
         //draw the points in S
-        g.setColor(Color.white);
-        g.drawRect(0, 0, 800, 800);
-        g.setColor(Color.black);
+        g.setColor(genericColour);
         for(Point2D p: S){
             g.drawRect((int)p.x, (int)p.y, 1, 1);
         }
         //draw the points in the convex hull
-        g.setColor(Color.red);
-        for(int i = 0; i < convexHull.size()-1; i++){
+        g.setColor(convexHullColour);
+        for(int i = 0; i < convexHull.size(); i++){
             Point2D curPoint = convexHull.get(i);
-            Point2D nextPoint = convexHull.get(i+1);
+            g.drawRect((int)curPoint.x, (int)curPoint.y, 1 ,1);
+            Point2D nextPoint = convexHull.get((i+1)%convexHull.size());
             g.drawLine((int)curPoint.x, (int)curPoint.y, (int)nextPoint.x, (int)nextPoint.y);
         }
         //draw a red line connecting the farthest pair
+        g.setColor(Color.red);
+        g.drawLine((int)farthestPair[0].x, (int)farthestPair[0].y, (int)farthestPair[1].x, (int)farthestPair[1].y);
     }
     
     
@@ -95,13 +96,46 @@ public class FarthestPairFinder extends JFrame {
             convexHullTop.add(curPoint);
         }
         
+        //extra point lol
+        convexHull.remove(convexHull.size()-1);
         //combine bottom half and top half
         convexHull.addAll(convexHullTop);
+        //extra point from putting them together
+        convexHull.remove(convexHull.size()-1);
     }
     
     public void findFarthestPair_EfficientWay() {
         //code this
         //must make use of the convex hull, which will have been calculated by the time this method is called
+        //lol doesnt work
+        int oppSide = convexHull.size()/2;
+        double farthest = 0;
+        if(convexHull.size()%2 == 0){
+            for(int i = 0; i < oppSide; i++){
+                Point2D curPoint = convexHull.get(i);
+                Point2D oppPoint = convexHull.get(i+oppSide);
+                double distance = Point2D.getDistance(curPoint,oppPoint);
+                if(distance > farthest){
+                    farthest = distance;
+                    farthestPair[0] = curPoint;
+                    farthestPair[1] = oppPoint;
+                }
+            }
+        }
+        else{
+            for(int i = 0; i < oppSide; i++){
+                for(int j = 0; j < 2; j++){
+                    Point2D curPoint = convexHull.get(i);
+                    Point2D oppPoint = convexHull.get((i+j+oppSide)%convexHull.size());
+                    double distance = Point2D.getDistance(curPoint,oppPoint);
+                    if(distance > farthest){
+                        farthest = distance;
+                        farthestPair[0] = curPoint;
+                        farthestPair[1] = oppPoint;
+                    }
+                }
+            }
+        }
     }
     
     public void findFarthestPair_BruteForceWay() {
@@ -114,8 +148,7 @@ public class FarthestPairFinder extends JFrame {
         //no changes are needed in main().  Just code the blank methods above.
         
         FarthestPairFinder fpf = new FarthestPairFinder();
-        
-        fpf.setBackground(Color.white);
+        fpf.setBackground(Color.black);
         fpf.setSize(800, 800);
         fpf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
@@ -123,7 +156,7 @@ public class FarthestPairFinder extends JFrame {
         
         fpf.findConvexHull();
         
-        //fpf.findFarthestPair_EfficientWay();
+        fpf.findFarthestPair_EfficientWay();
         
         fpf.setVisible(true); 
     }
