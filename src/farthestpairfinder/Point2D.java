@@ -23,6 +23,10 @@ public class Point2D {
         return (p2.y - p1.y)/(p2.x - p1.x);
     }
     
+    public static double cross(Point2D center, Point2D A, Point2D B) {
+        return (A.x - center.x) * (B.y - center.y) - (A.y - center.y) * (B.x - center.x);
+    }
+    
     public static boolean checkLeftTurn(Point2D center, Point2D p1, Point2D p2){
         double slope1 = getSlope(center, p1);
         double slope2 = getSlope(center, p2);
