@@ -28,7 +28,7 @@ public class FarthestPairFinder extends JFrame {
             int x = 50 + rand.nextInt(500);
             int y = 50 + rand.nextInt(500);
             S.add(new Point2D( x, y ));            
-        }        
+        }
     }
 
     
