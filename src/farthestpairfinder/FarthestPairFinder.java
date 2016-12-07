@@ -28,7 +28,9 @@ public class FarthestPairFinder extends JFrame {
             int x = 50 + rand.nextInt(500);
             int y = 50 + rand.nextInt(500);
             S.add(new Point2D( x, y ));            
-        }        
+        }
+        S.add(new Point2D(550,90));
+        S.add(new Point2D(550,300));
     }
 
     
@@ -56,45 +58,23 @@ public class FarthestPairFinder extends JFrame {
         //code this
         //finds bottom half of the convex hull left to right
         S = MergeSort.mergeSort(S);
-        convexHull.add(S.get(0));
-        convexHull.add(S.get(1));
-        for(int i = 2; i<S.size();i++){
-            Point2D curPoint = S.get(i);
-            int lastIndex = convexHull.size() - 1;
-            boolean leftTurn = Point2D.checkLeftTurn(convexHull.get(lastIndex-1), convexHull.get(lastIndex), curPoint);
-            while(leftTurn){
-                convexHull.remove(lastIndex);
-                lastIndex --;
-                if(convexHull.size() < 2){
-                    leftTurn = false;
-                }
-                else{
-                    leftTurn = Point2D.checkLeftTurn(convexHull.get(lastIndex-1), convexHull.get(lastIndex), curPoint);
-                }
+        for(Point2D curPoint: S){
+            while(convexHull.size()>=2 && Point2D.checkLeftTurn(convexHull.get(convexHull.size()-2), convexHull.get(convexHull.size()-1), curPoint)){
+                convexHull.remove(convexHull.size()-1);
             }
             convexHull.add(curPoint);
         }
-        
+
         //find top half of convex hull right to left
         List<Point2D> convexHullTop = new ArrayList();
-        convexHullTop.add(S.get(S.size()-1));
-        convexHullTop.add(S.get(S.size()-2));
-        for(int i = S.size()-3; i>=0;i--){
+        for(int i = S.size()-1; i >=0 ; i--){
             Point2D curPoint = S.get(i);
-            int lastIndex = convexHullTop.size() - 1;
-            boolean leftTurn = Point2D.checkLeftTurn(convexHullTop.get(lastIndex-1), convexHullTop.get(lastIndex), curPoint);
-            while(leftTurn){
-                convexHullTop.remove(lastIndex);
-                lastIndex --;
-                if(convexHullTop.size() < 2){
-                    leftTurn = false;
-                }
-                else{
-                    leftTurn = Point2D.checkLeftTurn(convexHullTop.get(lastIndex-1), convexHullTop.get(lastIndex), curPoint);
-                }
+            while(convexHullTop.size()>=2 && Point2D.checkLeftTurn(convexHullTop.get(convexHullTop.size()-2), convexHullTop.get(convexHullTop.size()-1), curPoint)){
+                convexHullTop.remove(convexHullTop.size()-1);
             }
             convexHullTop.add(curPoint);
         }
+
         
         //extra point lol
         convexHull.remove(convexHull.size()-1);
