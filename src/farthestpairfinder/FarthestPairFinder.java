@@ -29,8 +29,6 @@ public class FarthestPairFinder extends JFrame {
             int y = 50 + rand.nextInt(500);
             S.add(new Point2D( x, y ));            
         }
-        S.add(new Point2D(550,90));
-        S.add(new Point2D(550,300));
     }
 
     
@@ -50,7 +48,7 @@ public class FarthestPairFinder extends JFrame {
         }
         //draw a red line connecting the farthest pair
         g.setColor(Color.red);
-        g.drawLine((int)farthestPair[0].x, (int)farthestPair[0].y, (int)farthestPair[1].x, (int)farthestPair[1].y);
+        //g.drawLine((int)farthestPair[0].x, (int)farthestPair[0].y, (int)farthestPair[1].x, (int)farthestPair[1].y);
     }
     
     
@@ -87,35 +85,7 @@ public class FarthestPairFinder extends JFrame {
     public void findFarthestPair_EfficientWay() {
         //code this
         //must make use of the convex hull, which will have been calculated by the time this method is called
-        //lol doesnt work
-        int oppSide = convexHull.size()/2;
-        double farthest = 0;
-        if(convexHull.size()%2 == 0){
-            for(int i = 0; i < oppSide; i++){
-                Point2D curPoint = convexHull.get(i);
-                Point2D oppPoint = convexHull.get(i+oppSide);
-                double distance = Point2D.getDistance(curPoint,oppPoint);
-                if(distance > farthest){
-                    farthest = distance;
-                    farthestPair[0] = curPoint;
-                    farthestPair[1] = oppPoint;
-                }
-            }
-        }
-        else{
-            for(int i = 0; i < oppSide; i++){
-                for(int j = 0; j < 2; j++){
-                    Point2D curPoint = convexHull.get(i);
-                    Point2D oppPoint = convexHull.get((i+j+oppSide)%convexHull.size());
-                    double distance = Point2D.getDistance(curPoint,oppPoint);
-                    if(distance > farthest){
-                        farthest = distance;
-                        farthestPair[0] = curPoint;
-                        farthestPair[1] = oppPoint;
-                    }
-                }
-            }
-        }
+        //antipodal pair
     }
     
     public void findFarthestPair_BruteForceWay() {
