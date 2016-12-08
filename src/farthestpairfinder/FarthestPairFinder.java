@@ -15,9 +15,10 @@ public class FarthestPairFinder extends JFrame {
      Point2D[] farthestPair = new Point2D[ 2 ]; //the two points of the farthest pair
      
      List<Point2D> convexHull = new ArrayList(); //the vertices of the convex hull of S
-     
-     Color convexHullColour = Color.white;
-     Color genericColour = Color.yellow;
+     List<Point2D> convexHullTop = new ArrayList();
+     List<Point2D> convexHullBot = new ArrayList();
+     Color convexHullColour = Color.blue;
+     Color genericColour = Color.black;
 
      
     //fills S with random points
@@ -48,7 +49,7 @@ public class FarthestPairFinder extends JFrame {
         }
         //draw a red line connecting the farthest pair
         g.setColor(Color.red);
-        //g.drawLine((int)farthestPair[0].x, (int)farthestPair[0].y, (int)farthestPair[1].x, (int)farthestPair[1].y);
+        g.drawLine((int)farthestPair[0].x, (int)farthestPair[0].y, (int)farthestPair[1].x, (int)farthestPair[1].y);
     }
     
     
@@ -57,14 +58,13 @@ public class FarthestPairFinder extends JFrame {
         //finds bottom half of the convex hull left to right
         S = MergeSort.mergeSort(S);
         for(Point2D curPoint: S){
-            while(convexHull.size()>=2 && Point2D.checkLeftTurn(convexHull.get(convexHull.size()-2), convexHull.get(convexHull.size()-1), curPoint)){
-                convexHull.remove(convexHull.size()-1);
+            while(convexHullBot.size()>=2 && Point2D.checkLeftTurn(convexHullBot.get(convexHullBot.size()-2), convexHullBot.get(convexHullBot.size()-1), curPoint)){
+                convexHullBot.remove(convexHullBot.size()-1);
             }
-            convexHull.add(curPoint);
+            convexHullBot.add(curPoint);
         }
 
         //find top half of convex hull right to left
-        List<Point2D> convexHullTop = new ArrayList();
         for(int i = S.size()-1; i >=0 ; i--){
             Point2D curPoint = S.get(i);
             while(convexHullTop.size()>=2 && Point2D.checkLeftTurn(convexHullTop.get(convexHullTop.size()-2), convexHullTop.get(convexHullTop.size()-1), curPoint)){
@@ -73,7 +73,7 @@ public class FarthestPairFinder extends JFrame {
             convexHullTop.add(curPoint);
         }
 
-        
+        convexHull.addAll(convexHullBot);
         //extra point lol
         convexHull.remove(convexHull.size()-1);
         //combine bottom half and top half
@@ -86,6 +86,35 @@ public class FarthestPairFinder extends JFrame {
         //code this
         //must make use of the convex hull, which will have been calculated by the time this method is called
         //antipodal pair
+        List<Point2D[]> pairs = new ArrayList();
+        int i = 0;
+        int j = 0;
+        while(i < convexHullTop.size()-1 || j < convexHullBot.size()-1){
+            Point2D[] curPair = {convexHullTop.get(i),convexHullBot.get(j)};
+            pairs.add(curPair);
+            if(i == convexHullTop.size()-1){
+                j++;
+            }
+            else if(j == convexHullBot.size() - 1){
+                i++;
+            }
+            else if( (convexHullTop.get(i+1).y - convexHullTop.get(i).y) * (convexHullBot.get(j).x - convexHullBot.get(j+1).x) > (convexHullTop.get(i+1).x - convexHullTop.get(i).x) * (convexHullBot.get(j).y - convexHullBot.get(j+1).y)){
+                i++;
+            }
+            else{
+                j++;
+            }
+        }
+        
+        double greatestD = 0;
+        for(Point2D[] pair: pairs){
+            double curD = Point2D.getDistance(pair[0],pair[1]);
+            if(curD > greatestD){
+                farthestPair = pair;
+                greatestD = curD;
+            }
+        }
+
     }
     
     public void findFarthestPair_BruteForceWay() {
