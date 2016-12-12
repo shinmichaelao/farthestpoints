@@ -88,7 +88,6 @@ public class FarthestPairFinder extends JFrame {
         //code this
         //must make use of the convex hull, which will have been calculated by the time this method is called
         //antipodal pair
-        //List<Point2D[]> pairs = new ArrayList();
         int i = 0;
         int j = 0;
         double greatestD = 0;
