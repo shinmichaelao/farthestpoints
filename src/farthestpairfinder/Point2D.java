@@ -20,6 +20,9 @@ public class Point2D {
     }
     
     public static double getSlope(Point2D p1, Point2D p2){
+        if(p2.x == p1.x){ //always positive infinity
+            return 1/(p2.x-p1.x);
+        }
         return (p2.y - p1.y)/(p2.x - p1.x);
     }
     
