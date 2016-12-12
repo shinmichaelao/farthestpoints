@@ -88,12 +88,18 @@ public class FarthestPairFinder extends JFrame {
         //code this
         //must make use of the convex hull, which will have been calculated by the time this method is called
         //antipodal pair
-        List<Point2D[]> pairs = new ArrayList();
+        //List<Point2D[]> pairs = new ArrayList();
         int i = 0;
         int j = 0;
+        double greatestD = 0;
         while(i < convexHullTop.size()-1 || j < convexHullBot.size()-1){
             Point2D[] curPair = {convexHullTop.get(i),convexHullBot.get(j)};
-            pairs.add(curPair);
+            double curD = Point2D.getDistance(curPair[0],curPair[1]);
+            if(curD > greatestD){
+                farthestPair = curPair;
+                greatestD = curD;
+            }
+            
             if(i == convexHullTop.size()-1){
                 j++;
             }
@@ -107,15 +113,7 @@ public class FarthestPairFinder extends JFrame {
                 j++;
             }
         }
-        
-        double greatestD = 0;
-        for(Point2D[] pair: pairs){
-            double curD = Point2D.getDistance(pair[0],pair[1]);
-            if(curD > greatestD){
-                farthestPair = pair;
-                greatestD = curD;
-            }
-        }
+
 
     }
     
@@ -140,7 +138,7 @@ public class FarthestPairFinder extends JFrame {
         //no changes are needed in main().  Just code the blank methods above.
         
         FarthestPairFinder fpf = new FarthestPairFinder();
-        fpf.setBackground(Color.black);
+        fpf.setBackground(Color.white);
         fpf.setSize(800, 800);
         fpf.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 

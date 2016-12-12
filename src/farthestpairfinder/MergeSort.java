@@ -12,6 +12,7 @@ import java.util.List;
  * @author xum3131
  */
 public class MergeSort {
+    //ye olde mergesort
     public static List<Point2D> mergeSort(List<Point2D> a){
         int length = a.size();
         if(length == 1){
