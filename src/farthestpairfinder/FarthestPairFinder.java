@@ -11,9 +11,8 @@ public class FarthestPairFinder extends JFrame {
      int pointSize = 12;
      int numPoints = 100;
      
-     List<Point2D> S = new ArrayList();; //the set S
+     List<Point2D> S = new ArrayList(); //the set S
      Point2D[] farthestPair = new Point2D[ 2 ]; //the two points of the farthest pair
-     Point2D[] farthestPair2 = new Point2D[ 2 ];
      
      List<Point2D> convexHull = new ArrayList(); //the vertices of the convex hull of S
      List<Point2D> convexHullTop = new ArrayList();
@@ -51,7 +50,6 @@ public class FarthestPairFinder extends JFrame {
         //draw a red line connecting the farthest pair
         g.setColor(Color.red);
         g.drawLine((int)farthestPair[0].x, (int)farthestPair[0].y, (int)farthestPair[1].x, (int)farthestPair[1].y);
-        g.drawLine((int)farthestPair2[0].x, (int)farthestPair2[0].y, (int)farthestPair2[1].x, (int)farthestPair2[1].y);
     }
     
     
@@ -123,8 +121,8 @@ public class FarthestPairFinder extends JFrame {
             for(Point2D p2: convexHullBot){
                 double curD = Point2D.getDistance(p1,p2);
             if(curD > greatestD){
-                farthestPair2[1] = p1;
-                farthestPair2[0] = p2;
+                farthestPair[1] = p1;
+                farthestPair[0] = p2;
                 greatestD = curD;
             }
             }
@@ -146,7 +144,7 @@ public class FarthestPairFinder extends JFrame {
         fpf.findConvexHull();
         
         fpf.findFarthestPair_EfficientWay();
-        fpf.findFarthestPair_BruteForceWay();
+        
         fpf.setVisible(true); 
     }
 }
